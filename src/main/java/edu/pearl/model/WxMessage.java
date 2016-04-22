@@ -3,6 +3,9 @@
  */
 package edu.pearl.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -15,6 +18,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @since 2016年4月23日
  */
 @XStreamAlias("xml")
+@XmlRootElement(name = "xml")
 public class WxMessage {
 
     private String ToUserName;
@@ -36,6 +40,7 @@ public class WxMessage {
     private String Description;
     private String Url;
 
+    @XmlElement(name = "ToUserName")
     public String getToUserName() {
         return ToUserName;
     }
@@ -44,6 +49,7 @@ public class WxMessage {
         ToUserName = toUserName;
     }
 
+    @XmlElement(name = "FromUserName")
     public String getFromUserName() {
         return FromUserName;
     }
@@ -52,6 +58,7 @@ public class WxMessage {
         FromUserName = fromUserName;
     }
 
+    @XmlElement(name = "CreateTime")
     public long getCreateTime() {
         return CreateTime;
     }
@@ -60,6 +67,7 @@ public class WxMessage {
         CreateTime = createTime;
     }
 
+    @XmlElement(name = "MsgType")
     public String getMsgType() {
         return MsgType;
     }
@@ -68,6 +76,7 @@ public class WxMessage {
         MsgType = msgType;
     }
 
+    @XmlElement(name = "Content")
     public String getContent() {
         return Content;
     }
@@ -76,6 +85,7 @@ public class WxMessage {
         Content = content;
     }
 
+    @XmlElement(name = "MsgId")
     public Long getMsgId() {
         return MsgId;
     }
@@ -84,6 +94,7 @@ public class WxMessage {
         MsgId = msgId;
     }
 
+    @XmlElement(name = "PicUrl")
     public String getPicUrl() {
         return PicUrl;
     }
@@ -92,6 +103,7 @@ public class WxMessage {
         PicUrl = picUrl;
     }
 
+    @XmlElement(name = "MediaId")
     public String getMediaId() {
         return MediaId;
     }
@@ -100,6 +112,7 @@ public class WxMessage {
         MediaId = mediaId;
     }
 
+    @XmlElement(name = "Format")
     public String getFormat() {
         return Format;
     }
@@ -108,6 +121,7 @@ public class WxMessage {
         Format = format;
     }
 
+    @XmlElement(name = "Recognition")
     public String getRecognition() {
         return Recognition;
     }
@@ -116,6 +130,7 @@ public class WxMessage {
         Recognition = recognition;
     }
 
+    @XmlElement(name = "ThumbMediaId")
     public String getThumbMediaId() {
         return ThumbMediaId;
     }
@@ -124,6 +139,7 @@ public class WxMessage {
         ThumbMediaId = thumbMediaId;
     }
 
+    @XmlElement(name = "Location_X")
     public Float getLocation_X() {
         return Location_X;
     }
@@ -132,6 +148,7 @@ public class WxMessage {
         Location_X = location_X;
     }
 
+    @XmlElement(name = "Location_Y")
     public Float getLocation_Y() {
         return Location_Y;
     }
@@ -140,6 +157,7 @@ public class WxMessage {
         Location_Y = location_Y;
     }
 
+    @XmlElement(name = "Scale")
     public Integer getScale() {
         return Scale;
     }
@@ -148,6 +166,7 @@ public class WxMessage {
         Scale = scale;
     }
 
+    @XmlElement(name = "Label")
     public String getLabel() {
         return Label;
     }
@@ -156,6 +175,7 @@ public class WxMessage {
         Label = label;
     }
 
+    @XmlElement(name = "Title")
     public String getTitle() {
         return Title;
     }
@@ -164,6 +184,7 @@ public class WxMessage {
         Title = title;
     }
 
+    @XmlElement(name = "Description")
     public String getDescription() {
         return Description;
     }
@@ -172,6 +193,7 @@ public class WxMessage {
         Description = description;
     }
 
+    @XmlElement(name = "Url")
     public String getUrl() {
         return Url;
     }

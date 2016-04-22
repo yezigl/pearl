@@ -3,8 +3,6 @@
  */
 package edu.pearl.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,11 +31,11 @@ import edu.pearl.model.WxMessageType;
  */
 @RestController
 public class WeixinController {
-    
+
     private Logger logger = LoggerFactory.getLogger(getClass());
-    
+
     static XStream xstream = new XStream(new XppDriver(new NoNameCoder()));
-    
+
     static {
         xstream.processAnnotations(new Class<?>[] { WxMessage.class });
     }
@@ -51,9 +49,9 @@ public class WeixinController {
         logger.info("signature:{}, sha1:{}, string:{}", signature, sha1, string);
         return echostr;
     }
-    
+
     @RequestMapping(value = "/message/callback", method = RequestMethod.POST)
-    public String message(@RequestBody String body) {
+    public Object message(@RequestBody String body) {
         logger.info("{}", body);
         WxMessage msg = (WxMessage) xstream.fromXML(body);
         logger.info("{}", msg);
@@ -62,12 +60,8 @@ public class WeixinController {
         wm.setFromUserName(Constants.USER_ID);
         wm.setMsgType(WxMessageType.TEXT.getType());
         wm.setCreateTime(System.currentTimeMillis() / 1000);
-        try {
-            wm.setContent(URLEncoder.encode("你发送的内容是：" + msg.getContent(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        wm.setContent("你发送的内容是：" + msg.getContent());
         logger.info(xstream.toXML(wm));
-        return xstream.toXML(wm);
+        return wm;
     }
 }
