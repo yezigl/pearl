@@ -3,6 +3,9 @@
  */
 package edu.pearl.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -19,15 +22,15 @@ public class WxMessage {
     private long CreateTime;
     private String MsgType;
     private String Content;
-    private long MsgId;
+    private Long MsgId;
     private String PicUrl;
     private String MediaId;
     private String Format;
     private String Recognition;
     private String ThumbMediaId;
-    private float Location_X;
-    private float Location_Y;
-    private int Scale;
+    private Float Location_X;
+    private Float Location_Y;
+    private Integer Scale;
     private String Label;
     private String Title;
     private String Description;
@@ -73,11 +76,11 @@ public class WxMessage {
         Content = content;
     }
 
-    public long getMsgId() {
+    public Long getMsgId() {
         return MsgId;
     }
 
-    public void setMsgId(long msgId) {
+    public void setMsgId(Long msgId) {
         MsgId = msgId;
     }
 
@@ -121,27 +124,27 @@ public class WxMessage {
         ThumbMediaId = thumbMediaId;
     }
 
-    public float getLocation_X() {
+    public Float getLocation_X() {
         return Location_X;
     }
 
-    public void setLocation_X(float location_X) {
+    public void setLocation_X(Float location_X) {
         Location_X = location_X;
     }
 
-    public float getLocation_Y() {
+    public Float getLocation_Y() {
         return Location_Y;
     }
 
-    public void setLocation_Y(float location_Y) {
+    public void setLocation_Y(Float location_Y) {
         Location_Y = location_Y;
     }
 
-    public int getScale() {
+    public Integer getScale() {
         return Scale;
     }
 
-    public void setScale(int scale) {
+    public void setScale(Integer scale) {
         Scale = scale;
     }
 
@@ -175,6 +178,56 @@ public class WxMessage {
 
     public void setUrl(String url) {
         Url = url;
+    }
+
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+        builder.append("ToUserName", ToUserName);
+        builder.append("FromUserName", FromUserName);
+        builder.append("CreateTime", CreateTime);
+        builder.append("MsgType", MsgType);
+        builder.append("MsgId", MsgId);
+        if (Content != null) {
+            builder.append("Content", Content);
+        }
+        if (PicUrl != null) {
+            builder.append("PicUrl", PicUrl);
+        }
+        if (MediaId != null) {
+            builder.append("MediaId", MediaId);
+        }
+        if (Format != null) {
+            builder.append("Format", Format);
+        }
+        if (Recognition != null) {
+            builder.append("Recognition", Recognition);
+        }
+        if (ThumbMediaId != null) {
+            builder.append("ThumbMediaId", ThumbMediaId);
+        }
+        if (Location_X != null) {
+            builder.append("Location_X", Location_X);
+        }
+        if (Location_Y != null) {
+            builder.append("Location_Y", Location_Y);
+        }
+        if (Scale != null) {
+            builder.append("Scale", Scale);
+        }
+        if (Label != null) {
+            builder.append("Label", Label);
+        }
+        if (Title != null) {
+            builder.append("Title", Title);
+        }
+        if (Description != null) {
+            builder.append("Description", Description);
+        }
+        if (Url != null) {
+            builder.append("Url", Url);
+        }
+        return builder.toString();
     }
 
 }

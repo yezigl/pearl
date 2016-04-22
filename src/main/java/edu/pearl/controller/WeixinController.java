@@ -60,8 +60,8 @@ public class WeixinController {
         wm.setFromUserName(Constants.USER_ID);
         wm.setMsgType(WxMessageType.TEXT.getType());
         wm.setCreateTime(System.currentTimeMillis() / 1000);
-        wm.setContent("你发送的内容是：" + wm.getContent());
+        wm.setContent("你发送的内容是：" + msg.getContent());
         logger.info(xstream.toXML(wm));
-        return "success";
+        return xstream.toXML(wm);
     }
 }
