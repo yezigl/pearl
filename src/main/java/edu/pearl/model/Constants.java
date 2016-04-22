@@ -14,4 +14,6 @@ public class Constants {
     public static final String APP_ID = "wx23ee10402c57a2df";
     
     public static final String APP_SECRECT = "";
+    
+    public static final String USER_ID = "Pearl_EDU";
 }

@@ -19,7 +19,9 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.naming.NoNameCoder;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
+import edu.pearl.model.Constants;
 import edu.pearl.model.WxMessage;
+import edu.pearl.model.WxMessageType;
 
 /**
  * description here
@@ -51,8 +53,15 @@ public class WeixinController {
     @RequestMapping(value = "/message/callback", method = RequestMethod.POST)
     public String message(@RequestBody String body) {
         logger.info("{}", body);
-        Object object = xstream.fromXML(body);
-        logger.info("{}", object);
+        WxMessage msg = (WxMessage) xstream.fromXML(body);
+        logger.info("{}", msg);
+        WxMessage wm = new WxMessage();
+        wm.setToUserName(msg.getFromUserName());
+        wm.setFromUserName(Constants.USER_ID);
+        wm.setMsgType(WxMessageType.TEXT.getType());
+        wm.setCreateTime(System.currentTimeMillis() / 1000);
+        wm.setContent("你发送的内容是：" + wm.getContent());
+        logger.info(xstream.toXML(wm));
         return "success";
     }
 }

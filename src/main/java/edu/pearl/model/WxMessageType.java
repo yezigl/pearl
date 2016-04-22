@@ -22,5 +22,12 @@ public enum WxMessageType {
     public boolean equals(String text) {
         return name().toLowerCase().equals(text);
     }
+
+    /**
+     * @return
+     */
+    public String getType() {
+        return name().toLowerCase();
+    }
     
 }
