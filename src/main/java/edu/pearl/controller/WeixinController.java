@@ -19,6 +19,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.naming.NoNameCoder;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
+import edu.pearl.model.WxMessage;
+
 /**
  * description here
  *
@@ -31,6 +33,10 @@ public class WeixinController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     
     static XStream xstream = new XStream(new XppDriver(new NoNameCoder()));
+    
+    static {
+        xstream.processAnnotations(new Class<?>[] { WxMessage.class });
+    }
 
     @RequestMapping(value = "/message/callback", method = RequestMethod.GET)
     public String verify(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce,
