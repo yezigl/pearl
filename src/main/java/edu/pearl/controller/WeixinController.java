@@ -3,6 +3,8 @@
  */
 package edu.pearl.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +62,11 @@ public class WeixinController {
         wm.setFromUserName(Constants.USER_ID);
         wm.setMsgType(WxMessageType.TEXT.getType());
         wm.setCreateTime(System.currentTimeMillis() / 1000);
-        wm.setContent("你发送的内容是：" + msg.getContent());
+        try {
+            wm.setContent(URLEncoder.encode("你发送的内容是：" + msg.getContent(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         logger.info(xstream.toXML(wm));
         return xstream.toXML(wm);
     }
