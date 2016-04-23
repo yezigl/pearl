@@ -278,7 +278,9 @@ public class WxMessage {
         builder.append("FromUserName", FromUserName);
         builder.append("CreateTime", CreateTime);
         builder.append("MsgType", MsgType);
-        builder.append("MsgId", MsgId);
+        if (MsgId != null) {
+            builder.append("MsgId", MsgId);
+        }
         if (Content != null) {
             builder.append("Content", Content);
         }
