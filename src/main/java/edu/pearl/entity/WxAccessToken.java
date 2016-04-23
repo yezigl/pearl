@@ -3,12 +3,9 @@
  */
 package edu.pearl.entity;
 
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Field;
-import org.mongodb.morphia.annotations.Index;
-import org.mongodb.morphia.annotations.Indexes;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.orion.mongodb.entity.AbstractEntity;
+import com.orion.mongodb.entity.MongoEntity;
 
 /**
  * description here
@@ -16,12 +13,11 @@ import com.orion.mongodb.entity.AbstractEntity;
  * @author yezi
  * @since 2016年4月23日
  */
-@Entity("accesstoken")
-@Indexes({ @Index(fields = { @Field("expireTime") }) })
-public class WxAccessToken extends AbstractEntity {
+@Document(collection = "wxaccesstoken")
+public class WxAccessToken extends MongoEntity {
 
     private String accessToken;
-    private String expireTime;
+    private long expireTime;
 
     public String getAccessToken() {
         return accessToken;
@@ -31,12 +27,15 @@ public class WxAccessToken extends AbstractEntity {
         this.accessToken = accessToken;
     }
 
-    public String getExpireTime() {
+    public long getExpireTime() {
         return expireTime;
     }
 
-    public void setExpireTime(String expireTime) {
+    public void setExpireTime(long expireTime) {
         this.expireTime = expireTime;
     }
 
+    public boolean isExpired() {
+        return System.currentTimeMillis() > expireTime;
+    }
 }

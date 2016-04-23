@@ -1,58 +1,30 @@
 /**
  * Copyright 2016 yezi.gl. All Rights Reserved.
  */
-package edu.pearl.controller;
+package edu.pearl;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
-import com.orion.core.utils.HttpUtils;
 
 import edu.pearl.model.Button;
 import edu.pearl.model.ButtonType;
-import edu.pearl.model.Constants;
-import edu.pearl.service.WeixinService;
 
 /**
  * description here
  *
  * @author yezi
- * @since 2016年4月22日
+ * @since 2016年4月24日
  */
-@RestController
-public class AdminController {
+public class AppTest {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    
-    @Resource
-    WeixinService weixinService;
-
-    @RequestMapping(value = "/menu/create", method = RequestMethod.GET)
-    public Object menuCreate() {
-        Map<String, List<Button>> buttons = genButtons();
-        logger.info(JSON.toJSONString(buttons));
-        String ret = HttpUtils.post(weixinService.ApiWithAccessToken(Constants.WX_API_MENUCREATE), JSON.toJSONString(buttons));
-        return ret;
-    }
-    
-    @RequestMapping(value = "/menu/delete", method = RequestMethod.GET)
-    public Object menuDelete() {
-        String ret = HttpUtils.get(weixinService.ApiWithAccessToken(Constants.WX_API_MENUDELETE));
-        return ret;
-    }
-    
-    private Map<String, List<Button>> genButtons() {
+    @Test
+    public void test() {
         Map<String, List<Button>> buttons = new HashMap<>();
         Button button1 = new Button();
         button1.setName("在线购买");
@@ -68,7 +40,7 @@ public class AdminController {
         Button button2 = new Button();
         button2.setName("二维码");
         Button subButton2_1 = new Button.Builder().type(ButtonType.CLICK.getType()).name("积分").key("bonus").build();
-        Button subButton2_2 = new Button.Builder().type(ButtonType.CLICK.getType()).name("我的二维码").key("qrcode").build();
+        Button subButton2_2 = new Button.Builder().type(ButtonType.CLICK.getType()).name("我的二维码").url("qrcode").build();
         button2.setSubButton(Arrays.asList(subButton2_1, subButton2_2));
         Button button3 = new Button();
         button3.setName("会员信息");
@@ -78,6 +50,6 @@ public class AdminController {
         List<Button> list = Arrays.asList(button1, button2, button3);
         buttons.put("button", list);
         
-        return buttons;
+        System.out.println(JSON.toJSONString(buttons, true));
     }
 }

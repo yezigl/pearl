@@ -39,6 +39,13 @@ public class WxMessage {
     private String Title;
     private String Description;
     private String Url;
+    private String Event;
+    private String EventKey;
+    private String Ticket;
+    private Float Latitude;
+    private Float Longitude;
+    private Float Precision;
+    private WxMedia Image;
 
     @XmlElement(name = "ToUserName")
     public String getToUserName() {
@@ -202,6 +209,68 @@ public class WxMessage {
         Url = url;
     }
 
+    @XmlElement(name = "Event")
+    public String getEvent() {
+        return Event;
+    }
+
+    public void setEvent(String event) {
+        Event = event;
+    }
+
+    @XmlElement(name = "EventKey")
+    public String getEventKey() {
+        return EventKey;
+    }
+
+    public void setEventKey(String eventKey) {
+        EventKey = eventKey;
+    }
+
+    @XmlElement(name = "Ticket")
+    public String getTicket() {
+        return Ticket;
+    }
+
+    public void setTicket(String ticket) {
+        Ticket = ticket;
+    }
+    
+    
+    @XmlElement(name = "Latitude")
+    public Float getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(Float latitude) {
+        Latitude = latitude;
+    }
+    @XmlElement(name = "Longitude")
+    public Float getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        Longitude = longitude;
+    }
+    @XmlElement(name = "Precision")
+    public Float getPrecision() {
+        return Precision;
+    }
+
+    public void setPrecision(Float precision) {
+        Precision = precision;
+    }
+
+    @XmlElement(name = "Image")
+    public WxMedia getImage() {
+        return Image;
+    }
+
+    public void setImage(WxMedia image) {
+        Image = image;
+    }
+
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
@@ -248,6 +317,24 @@ public class WxMessage {
         }
         if (Url != null) {
             builder.append("Url", Url);
+        }
+        if (Event != null) {
+            builder.append("Event", Event);
+        }
+        if (EventKey != null) {
+            builder.append("EventKey", EventKey);
+        }
+        if (Ticket != null) {
+            builder.append("Ticket", Ticket);
+        }
+        if (Latitude != null) {
+            builder.append("Latitude", Latitude);
+        }
+        if (Longitude != null) {
+            builder.append("Longitude", Longitude);
+        }
+        if (Precision != null) {
+            builder.append("Precision", Precision);
         }
         return builder.toString();
     }

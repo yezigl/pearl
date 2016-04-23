@@ -8,7 +8,7 @@
     <parent>
         <groupId>orion</groupId>
         <artifactId>orion-web</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
 
     <dependencies>
@@ -39,16 +39,16 @@
             </activation>
             <properties>
                 <profile>dev</profile>
-                <logging.path>/opt/logs/${project.name}</logging.path>
+                <logging.path>/opt/logs/@project.name@</logging.path>
                 <upload.path>/opt/data/upload/</upload.path>
-                <mongodb.host>mongo.yezi.gl</mongodb.host>
+                <mongodb.host>ec2.yezi.gl</mongodb.host>
             </properties>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <profile>prod</profile>
-                <logging.path>/opt/logs/${project.name}</logging.path>
+                <logging.path>/opt/logs/@project.name@</logging.path>
                 <upload.path>/opt/data.upload/</upload.path>
                 <mongodb.host>127.0.0.1</mongodb.host>
             </properties>
@@ -73,9 +73,9 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
-                <excludes>
-                    <exclude>*.properties</exclude>
-                </excludes>
+                <includes>
+                    <include>*.xml</include>
+                </includes>
             </resource>
         </resources>
     </build>

@@ -17,10 +17,11 @@ public enum WxMessageType {
     VIDEO,
     SHORTVIDEO,
     LOCATION,
-    LINK;
+    LINK,
+    EVENT;
     
     public boolean equals(String text) {
-        return name().toLowerCase().equals(text);
+        return name().equals(text.toUpperCase());
     }
 
     /**
