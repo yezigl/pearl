@@ -98,9 +98,11 @@ public class WeixinService {
             params.put("expire_seconds", 604800);
         }
         params.put("action_name", action.name());
-        Map<String, Object> sc = new HashMap<>();
-        sc.put("scene_id", user.getScene());
-        params.put("action_info", sc);
+        Map<String, Object> sceneId = new HashMap<>();
+        sceneId.put("scene_id", user.getScene());
+        Map<String, Object> scene = new HashMap<>();
+        scene.put("scene", sceneId);
+        params.put("action_info", scene);
         String content = JSON.toJSONString(params);
         logger.debug("param = {}", content);
 
