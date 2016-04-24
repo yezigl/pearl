@@ -75,7 +75,7 @@ public class WeixinController {
         WxMessageType messageType = WxMessageType.valueOf(msg.getMsgType().toUpperCase());
         switch (messageType) {
         case EVENT:
-            WxEvent event = WxEvent.valueOf(msg.getEvent());
+            WxEvent event = WxEvent.valueOf(msg.getEvent().toUpperCase());
             switch (event) {
             case CLICK:
                 if (WxEventKey.QRCODE.equals(msg.getEventKey())) {
@@ -98,6 +98,7 @@ public class WeixinController {
                 }
                 break;
             case SUBSCRIBE:
+                
                 break;
             case LOCATION:
             case UNSUBSCRIBE:

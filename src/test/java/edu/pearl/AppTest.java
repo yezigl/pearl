@@ -52,4 +52,10 @@ public class AppTest {
         
         System.out.println(JSON.toJSONString(buttons, true));
     }
+    
+    @Test
+    public void test1() {
+        System.out.println(System.currentTimeMillis());
+        System.out.println(Integer.MAX_VALUE);
+    }
 }
