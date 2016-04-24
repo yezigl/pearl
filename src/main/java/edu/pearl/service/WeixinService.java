@@ -130,6 +130,7 @@ public class WeixinService {
         // TODO
         if (user == null) {
             user = new User();
+            user.setOpenId(openId);
             user.genScene();
             user.setSubscribe(true);
             user.setSource(Source.WEIXIN);
