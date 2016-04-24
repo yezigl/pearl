@@ -142,6 +142,7 @@ public class WeixinService {
     }
     
     public void updateUser(User user) {
+        // TODO 获取用户信息
         userDao.save(user);
     }
     
@@ -165,6 +166,7 @@ public class WeixinService {
                 bonus.setAmount(bonus.getAmount() + amount);
                 bonusDao.save(bonus);
                 BonusHistory bonusHistory = new BonusHistory();
+                bonusHistory.setUser(fromUser);
                 bonusHistory.setAmount(amount);
                 bonusHistory.setSource(source);
                 bonusHistoryDao.save(bonusHistory);

@@ -160,7 +160,9 @@ public class WeixinController {
                 scene = Integer.parseInt(request.getEventKey().replace("qrscene_", ""));
             }
             user.setFromScene(scene);
+            user.setSubscribe(true);
             weixinService.updateUser(user);
+            // TODO 只有新用户第一次才会加积分
             weixinService.updateBonus(user, BonusSource.SHARE, 100);
             // TODO 发送一条消息
             break;
