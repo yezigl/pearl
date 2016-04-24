@@ -18,10 +18,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.orion.core.utils.HttpUtils;
 
+import edu.pearl.dao.BonusDao;
+import edu.pearl.dao.BonusHistoryDao;
 import edu.pearl.dao.UserDao;
 import edu.pearl.dao.WxAccessTokenDao;
+import edu.pearl.entity.Bonus;
+import edu.pearl.entity.BonusHistory;
 import edu.pearl.entity.User;
 import edu.pearl.entity.WxAccessToken;
+import edu.pearl.model.BonusSource;
 import edu.pearl.model.Constants;
 import edu.pearl.model.QRAction;
 import edu.pearl.model.Source;
@@ -42,6 +47,10 @@ public class WeixinService {
     WxAccessTokenDao wxAccessTokenDao;
     @Resource
     UserDao userDao;
+    @Resource
+    BonusDao bonusDao;
+    @Resource
+    BonusHistoryDao bonusHistoryDao;
 
     private boolean isSuccess(JSONObject jsonObject) {
         return jsonObject != null && !jsonObject.containsKey("errcode");
@@ -116,23 +125,9 @@ public class WeixinService {
         return null;
     }
 
-    public User createUser(String openId, int fromScene) {
-        User user = userDao.findByOpenId(openId);
-        if (user == null) {
-            user = new User();
-            user.genScene();
-            // TODO 加积分
-        }
-        user.setSubscribe(true);
-        user.setSource(Source.WEIXIN);
-        user.setFromScene(fromScene);
-        userDao.save(user);
-        return user;
-    }
-    
     public User getUser(String openId) {
         User user = userDao.findByOpenId(openId);
-        // TODO 以后删除
+        // TODO
         if (user == null) {
             user = new User();
             user.genScene();
@@ -146,5 +141,32 @@ public class WeixinService {
     
     public void updateUser(User user) {
         userDao.save(user);
+    }
+    
+    public Bonus getBonus(User user) {
+        Bonus bonus = bonusDao.findByUser(user);
+        if (bonus == null) {
+            bonus = new Bonus();
+        }
+        return bonus;
+    }
+    
+    public void updateBonus(User user, BonusSource source, int amount) {
+        if (user.getFromScene() > 0) {
+            User fromUser = userDao.findByScene(user.getFromScene());
+            if (fromUser != null) {
+                Bonus bonus = bonusDao.findByUser(fromUser);
+                if (bonus == null) {
+                    bonus = new Bonus();
+                    bonus.setUser(fromUser);
+                }
+                bonus.setAmount(bonus.getAmount() + amount);
+                bonusDao.save(bonus);
+                BonusHistory bonusHistory = new BonusHistory();
+                bonusHistory.setAmount(amount);
+                bonusHistory.setSource(source);
+                bonusHistoryDao.save(bonusHistory);
+            }
+        }
     }
 }

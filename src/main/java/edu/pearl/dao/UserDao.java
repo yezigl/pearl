@@ -16,4 +16,6 @@ import edu.pearl.entity.User;
 public interface UserDao extends MongoDao<User> {
 
     public User findByOpenId(String openId);
+    
+    public User findByScene(int scene);
 }

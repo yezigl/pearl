@@ -24,7 +24,7 @@ public class BonusHistory extends MongoEntity {
     @Indexed
     private User user;
     private BonusSource source;
-    private int num;
+    private int amount;
 
     public User getUser() {
         return user;
@@ -42,12 +42,12 @@ public class BonusHistory extends MongoEntity {
         this.source = source;
     }
 
-    public int getNum() {
-        return num;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
 }

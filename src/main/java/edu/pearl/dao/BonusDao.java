@@ -6,6 +6,7 @@ package edu.pearl.dao;
 import com.orion.mongodb.dao.MongoDao;
 
 import edu.pearl.entity.Bonus;
+import edu.pearl.entity.User;
 
 /**
  * description here
@@ -15,4 +16,5 @@ import edu.pearl.entity.Bonus;
  */
 public interface BonusDao extends MongoDao<Bonus> {
 
+    public Bonus findByUser(User user);
 }

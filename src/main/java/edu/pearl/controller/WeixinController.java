@@ -5,13 +5,10 @@ package edu.pearl.controller;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections4.map.LRUMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +23,9 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.naming.NoNameCoder;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
+import edu.pearl.entity.Bonus;
 import edu.pearl.entity.User;
+import edu.pearl.model.BonusSource;
 import edu.pearl.model.Constants;
 import edu.pearl.model.QRAction;
 import edu.pearl.model.WxEvent;
@@ -35,6 +34,7 @@ import edu.pearl.model.WxMedia;
 import edu.pearl.model.WxMediaType;
 import edu.pearl.model.WxMessage;
 import edu.pearl.model.WxMessageType;
+import edu.pearl.service.CacheService;
 import edu.pearl.service.WeixinService;
 
 /**
@@ -56,10 +56,8 @@ public class WeixinController {
 
     @Resource
     WeixinService weixinService;
-
-    Random random = new Random(Integer.MAX_VALUE);
-
-    Map<String, String> cache = new LRUMap<>(1000);
+    @Resource
+    CacheService cacheService;
 
     @RequestMapping(value = "/message/callback", method = RequestMethod.GET)
     public String verify(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce,
@@ -74,59 +72,17 @@ public class WeixinController {
     @RequestMapping(value = "/message/callback", method = RequestMethod.POST)
     public Object message(@RequestBody String body) {
         WxMessage response = new WxMessage();
+        response.setFromUserName(Constants.USER_ID);
+        response.setCreateTime(System.currentTimeMillis() / 1000);
 
-        logger.info("request\n{}", body);
+        logger.info("receive\n{}", body);
         WxMessage msg = (WxMessage) xstream.fromXML(body);
-        logger.info("request\n{}", msg);
-        User user = weixinService.getUser(msg.getFromUserName());
+        logger.info("format\n{}", msg);
         WxMessageType messageType = WxMessageType.valueOf(msg.getMsgType().toUpperCase());
         switch (messageType) {
         case EVENT:
             WxEvent event = WxEvent.valueOf(msg.getEvent().toUpperCase());
-            switch (event) {
-            case CLICK:
-                if (WxEventKey.QRCODE.equals(msg.getEventKey())) {
-                    String mediaId = null;
-                    if (cache.containsKey(user.getOpenId())) {
-                        mediaId = cache.get(user.getOpenId());
-                    } else {
-                        String ticket = weixinService.getQrcodeTicket(user, QRAction.QR_SCENE);
-                        if (ticket != null) {
-                            byte[] bytes = HttpUtils.getBytes(Constants.WX_API_SHOWQRCODE + ticket, null);
-                            if (bytes != null) {
-                                mediaId = weixinService.getMediaId(WxMediaType.IMAGE, bytes);
-                                cache.put(user.getOpenId(), mediaId);
-                            }
-                        }
-                    }
-                    if (mediaId != null) {
-                        response.setToUserName(msg.getFromUserName());
-                        response.setFromUserName(Constants.USER_ID);
-                        response.setMsgType(WxMessageType.IMAGE.getType());
-                        response.setCreateTime(System.currentTimeMillis() / 1000);
-                        WxMedia media = new WxMedia();
-                        media.setMediaId(mediaId);
-                        response.setImage(media);
-                    }
-                }
-                break;
-            case SUBSCRIBE:
-                int scene = 0;
-                if (StringUtils.isNotBlank(msg.getEventKey())) {
-                    scene = Integer.parseInt(msg.getEventKey().replace("qrscene_", ""));
-                }
-                user.setFromScene(scene);
-                weixinService.updateUser(user);
-                // TODO 发送一条消息
-                break;
-            case UNSUBSCRIBE:
-                user.setSubscribe(false);
-                weixinService.updateUser(user);
-                break;
-            case LOCATION:
-            case VIEW:
-            case SCAN:
-            }
+            processMessageEvent(msg, response, event);
             break;
         case IMAGE:
             break;
@@ -137,11 +93,11 @@ public class WeixinController {
         case SHORTVIDEO:
             break;
         case TEXT:
-//            response.setToUserName(msg.getFromUserName());
-//            response.setFromUserName(Constants.USER_ID);
-//            response.setMsgType(WxMessageType.TEXT.getType());
-//            response.setCreateTime(System.currentTimeMillis() / 1000);
-//            response.setContent("你发送的内容是：" + msg.getContent());
+            // response.setToUserName(msg.getFromUserName());
+            // response.setFromUserName(Constants.USER_ID);
+            // response.setMsgType(WxMessageType.TEXT.getType());
+            // response.setCreateTime(System.currentTimeMillis() / 1000);
+            // response.setContent("你发送的内容是：" + msg.getContent());
             break;
         case VIDEO:
             break;
@@ -153,8 +109,59 @@ public class WeixinController {
         if (response.getToUserName() == null) {
             return "success";
         }
-        logger.info("response\n", xstream.toXML(response));
+        logger.info("send\n{}", xstream.toXML(response));
 
+        return response;
+    }
+
+    private WxMessage processMessageEvent(WxMessage request, WxMessage response, WxEvent event) {
+        User user = weixinService.getUser(request.getFromUserName());
+        switch (event) {
+        case CLICK:
+            if (WxEventKey.QRCODE.equals(request.getEventKey())) {
+                String mediaId = cacheService.get(user.getOpenId());
+                if (mediaId == null) {
+                    String ticket = weixinService.getQrcodeTicket(user, QRAction.QR_SCENE);
+                    if (ticket != null) {
+                        byte[] bytes = HttpUtils.getBytes(Constants.WX_API_SHOWQRCODE + ticket, null);
+                        if (bytes != null) {
+                            mediaId = weixinService.getMediaId(WxMediaType.IMAGE, bytes);
+                            cacheService.set(user.getOpenId(), mediaId, 86400);
+                        }
+                    }
+                }
+                if (mediaId != null) {
+                    response.setToUserName(request.getFromUserName());
+                    response.setMsgType(WxMessageType.IMAGE.getType());
+                    WxMedia media = new WxMedia();
+                    media.setMediaId(mediaId);
+                    response.setImage(media);
+                }
+            } else if (WxEventKey.BONUS.equals(request.getEventKey())) {
+                Bonus bonus = weixinService.getBonus(user);
+                response.setToUserName(request.getFromUserName());
+                response.setMsgType(WxMessageType.TEXT.getType());
+                response.setContent("您当前在珍珠教育的个人总积分为" + bonus.getAmount() + "分");
+            }
+            break;
+        case SUBSCRIBE:
+            int scene = 0;
+            if (StringUtils.isNotBlank(request.getEventKey())) {
+                scene = Integer.parseInt(request.getEventKey().replace("qrscene_", ""));
+            }
+            user.setFromScene(scene);
+            weixinService.updateUser(user);
+            weixinService.updateBonus(user, BonusSource.SHARE, 100);
+            // TODO 发送一条消息
+            break;
+        case UNSUBSCRIBE:
+            user.setSubscribe(false);
+            weixinService.updateUser(user);
+            break;
+        case LOCATION:
+        case VIEW:
+        case SCAN:
+        }
         return response;
     }
 }
