@@ -4,7 +4,9 @@
 package edu.pearl.controller;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -58,6 +60,8 @@ public class WeixinController {
     WeixinService weixinService;
     @Resource
     CacheService cacheService;
+    
+    Set<WxMessage> duplicate = new HashSet<>();
 
     @RequestMapping(value = "/message/callback", method = RequestMethod.GET)
     public String verify(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce,
@@ -77,6 +81,12 @@ public class WeixinController {
 
         logger.info("receive\n{}", body);
         WxMessage msg = (WxMessage) xstream.fromXML(body);
+        if (duplicate.contains(msg)) {
+            logger.warn("receive duplicate message");
+            return "success";
+        } else {
+            duplicate.add(msg);
+        }
         logger.info("format\n{}", msg);
         WxMessageType messageType = WxMessageType.valueOf(msg.getMsgType().toUpperCase());
         switch (messageType) {

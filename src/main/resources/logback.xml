@@ -21,6 +21,7 @@
     </appender>
 
     <logger name="org.springframework" level="INFO" />
+    <logger name="edu.pearl" level="DEBUG" />
 
     <root>
         <level value="INFO" />

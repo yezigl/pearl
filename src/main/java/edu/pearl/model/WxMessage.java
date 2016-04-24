@@ -355,4 +355,43 @@ public class WxMessage {
         return builder.toString();
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        if (MsgId != null) {
+            result = prime * result + MsgId.hashCode();
+        } else {
+            result = prime * result + (int) (CreateTime ^ (CreateTime >>> 32));
+            result = prime * result + ((FromUserName == null) ? 0 : FromUserName.hashCode());
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        WxMessage other = (WxMessage) obj;
+        if (MsgId != null) {
+            if (!MsgId.equals(other.getMsgId())) {
+                return false;
+            }
+        } else {
+            if (CreateTime != other.CreateTime)
+                return false;
+            if (FromUserName == null) {
+                if (other.FromUserName != null)
+                    return false;
+            } else if (!FromUserName.equals(other.FromUserName))
+                return false;
+        }
+        return true;
+    }
+
 }

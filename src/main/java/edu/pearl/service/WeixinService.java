@@ -115,7 +115,6 @@ public class WeixinService {
 
     public String getMediaId(WxMediaType type, byte[] bytes) {
         String url = ApiWithAccessToken(Constants.WX_API_MEDIAUPLOAD) + "&type=" + type.name().toLowerCase();
-        logger.debug(url);
         String ret = HttpUtils.upload(url, null, "media", bytes);
         JSONObject jsonObject = JSONObject.parseObject(ret);
         logger.debug("ret = {}", jsonObject);
