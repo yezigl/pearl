@@ -46,6 +46,7 @@ public class WxMessage {
     private Float Longitude;
     private Float Precision;
     private WxMedia Image;
+    private Integer MenuId;
 
     @XmlElement(name = "ToUserName")
     public String getToUserName() {
@@ -235,8 +236,7 @@ public class WxMessage {
     public void setTicket(String ticket) {
         Ticket = ticket;
     }
-    
-    
+
     @XmlElement(name = "Latitude")
     public Float getLatitude() {
         return Latitude;
@@ -245,6 +245,7 @@ public class WxMessage {
     public void setLatitude(Float latitude) {
         Latitude = latitude;
     }
+
     @XmlElement(name = "Longitude")
     public Float getLongitude() {
         return Longitude;
@@ -253,6 +254,7 @@ public class WxMessage {
     public void setLongitude(Float longitude) {
         Longitude = longitude;
     }
+
     @XmlElement(name = "Precision")
     public Float getPrecision() {
         return Precision;
@@ -269,6 +271,15 @@ public class WxMessage {
 
     public void setImage(WxMedia image) {
         Image = image;
+    }
+
+    @XmlElement(name = "MenuId")
+    public Integer getMenuId() {
+        return MenuId;
+    }
+
+    public void setMenuId(Integer menuId) {
+        MenuId = menuId;
     }
 
     @Override
@@ -337,6 +348,9 @@ public class WxMessage {
         }
         if (Precision != null) {
             builder.append("Precision", Precision);
+        }
+        if (MenuId != null) {
+            builder.append("MenuId", MenuId);
         }
         return builder.toString();
     }

@@ -3,10 +3,14 @@
  */
 package edu.pearl.task;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import edu.pearl.service.WeixinService;
 
 /**
  * description here
@@ -18,9 +22,13 @@ import org.springframework.stereotype.Component;
 public class AccessTokenTasker {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
+    
+    @Resource
+    WeixinService weixinService;
 
     @Scheduled(cron = "0 0 */2 * * ?")
     public void updateWxAccessToken() {
         logger.debug("update access token");
+        weixinService.getAccessToken();
     }
 }

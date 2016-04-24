@@ -27,13 +27,10 @@ public class User extends MongoEntity {
     private String avatar;
     @Indexed
     private int scene;
-    private String fromUser;
+    private int fromScene;
     private Source source;
-    
-    /**
-     * 
-     */
-    public User() {
+
+    public void genScene() {
         scene = (int) (System.currentTimeMillis() / 1000);
     }
 
@@ -85,12 +82,12 @@ public class User extends MongoEntity {
         this.scene = scene;
     }
 
-    public String getFromUser() {
-        return fromUser;
+    public int getFromScene() {
+        return fromScene;
     }
 
-    public void setFromUser(String fromUser) {
-        this.fromUser = fromUser;
+    public void setFromScene(int fromScene) {
+        this.fromScene = fromScene;
     }
 
     public Source getSource() {

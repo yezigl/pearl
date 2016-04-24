@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.orion.core.utils.HttpUtils;
 
 import edu.pearl.TestConfig;
+import edu.pearl.entity.User;
 import edu.pearl.model.Constants;
 import edu.pearl.model.QRAction;
 import edu.pearl.model.WxMediaType;
@@ -43,7 +44,9 @@ public class WeixinServiceTest {
     
     @Test
     public void testGetQrcodeTicket() {
-        String ticket = weixinService.getQrcodeTicket(1234, QRAction.QR_SCENE);
+        User user = new User();
+        user.genScene();
+        String ticket = weixinService.getQrcodeTicket(user, QRAction.QR_SCENE);
         System.out.println(ticket);
     }
 

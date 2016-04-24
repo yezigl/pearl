@@ -18,10 +18,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.orion.core.utils.HttpUtils;
 
+import edu.pearl.dao.UserDao;
 import edu.pearl.dao.WxAccessTokenDao;
+import edu.pearl.entity.User;
 import edu.pearl.entity.WxAccessToken;
 import edu.pearl.model.Constants;
 import edu.pearl.model.QRAction;
+import edu.pearl.model.Source;
 import edu.pearl.model.WxMediaType;
 
 /**
@@ -37,6 +40,8 @@ public class WeixinService {
 
     @Resource
     WxAccessTokenDao wxAccessTokenDao;
+    @Resource
+    UserDao userDao;
 
     private boolean isSuccess(JSONObject jsonObject) {
         return jsonObject != null && !jsonObject.containsKey("errcode");
@@ -69,22 +74,23 @@ public class WeixinService {
             }
             token.setAccessToken(jsonObject.getString("access_token"));
             token.setExpireTime(System.currentTimeMillis() + jsonObject.getLongValue("expires_in") * 1000);
-            wxAccessTokenDao.insert(token);
+            wxAccessTokenDao.save(token);
             return token.getAccessToken();
         } else {
             logger.error("get accessToken error, {}", jsonObject);
         }
         return null;
     }
+    
 
-    public String getQrcodeTicket(Object scene, QRAction action) {
+    public String getQrcodeTicket(User user, QRAction action) {
         Map<String, Object> params = new HashMap<>();
         if (action == QRAction.QR_SCENE) {
             params.put("expire_seconds", 604800);
         }
         params.put("action_name", action.name());
         Map<String, Object> sc = new HashMap<>();
-        sc.put("scene_id", scene);
+        sc.put("scene_id", user.getScene());
         params.put("action_info", sc);
         String content = JSON.toJSONString(params);
         logger.debug("param = {}", content);
@@ -108,5 +114,37 @@ public class WeixinService {
             return jsonObject.getString("media_id");
         }
         return null;
+    }
+
+    public User createUser(String openId, int fromScene) {
+        User user = userDao.findByOpenId(openId);
+        if (user == null) {
+            user = new User();
+            user.genScene();
+            // TODO 加积分
+        }
+        user.setSubscribe(true);
+        user.setSource(Source.WEIXIN);
+        user.setFromScene(fromScene);
+        userDao.save(user);
+        return user;
+    }
+    
+    public User getUser(String openId) {
+        User user = userDao.findByOpenId(openId);
+        // TODO 以后删除
+        if (user == null) {
+            user = new User();
+            user.genScene();
+            user.setSubscribe(true);
+            user.setSource(Source.WEIXIN);
+            userDao.save(user);
+        }
+        
+        return user;
+    }
+    
+    public void updateUser(User user) {
+        userDao.save(user);
     }
 }
