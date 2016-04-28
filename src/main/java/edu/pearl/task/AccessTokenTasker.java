@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import edu.pearl.service.WeidianService;
 import edu.pearl.service.WeixinService;
 
 /**
@@ -25,10 +26,18 @@ public class AccessTokenTasker {
     
     @Resource
     WeixinService weixinService;
+    @Resource
+    WeidianService weidianService;
 
     @Scheduled(cron = "0 0 */2 * * ?")
     public void updateWxAccessToken() {
-        logger.debug("update access token");
+        logger.debug("update wx access token");
         weixinService.getAccessToken();
+    }
+    
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateVdAccessToken() {
+        logger.debug("update vd access token");
+        weidianService.getAccessToken();
     }
 }

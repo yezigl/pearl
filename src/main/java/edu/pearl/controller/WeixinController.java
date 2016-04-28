@@ -46,6 +46,7 @@ import edu.pearl.service.WeixinService;
  * @since 2016年4月21日
  */
 @RestController
+@RequestMapping("/weixin")
 public class WeixinController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -76,7 +77,7 @@ public class WeixinController {
     @RequestMapping(value = "/message/callback", method = RequestMethod.POST)
     public Object message(@RequestBody String body) {
         WxMessage response = new WxMessage();
-        response.setFromUserName(Constants.USER_ID);
+        response.setFromUserName(Constants.WX_USER_ID);
         response.setCreateTime(System.currentTimeMillis() / 1000);
 
         logger.info("receive\n{}", body);

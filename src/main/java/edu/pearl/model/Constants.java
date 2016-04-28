@@ -11,11 +11,11 @@ package edu.pearl.model;
  */
 public class Constants {
 
-    public static final String APP_ID = "wx23ee10402c57a2df";
+    public static final String WX_APP_ID = "wx23ee10402c57a2df";
     
-    public static final String APP_SECRECT = "dc84a73d885aa67ef870e1f8c90f0d15";
+    public static final String WX_APP_SECRECT = "dc84a73d885aa67ef870e1f8c90f0d15";
     
-    public static final String USER_ID = "Pearl_EDU";
+    public static final String WX_USER_ID = "Pearl_EDU";
     
     public static final String WX_HOST = "https://api.weixin.qq.com/cgi-bin";
     
@@ -30,4 +30,12 @@ public class Constants {
     public static final String WX_API_SHOWQRCODE = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=";
     
     public static final String WX_API_MEDIAUPLOAD = WX_HOST + "/media/upload";
+    
+    public static final String VD_APP_KEY = "653975";
+    
+    public static final String VD_APP_SECRET = "e07f50832dc3746b89936ee076e3d017";
+    
+    public static final String VD_HOST = "https://api.vdian.com";
+    
+    public static final String VD_API_ACCESSTOKEN = VD_HOST + "/token";
 }

@@ -57,13 +57,13 @@ public class AdminController {
         Button button1 = new Button();
         button1.setName("在线购买");
         Button subButton1_1 = new Button.Builder().type(ButtonType.VIEW.getType()).name("少儿英语")
-                .url("http://zhibo666.tv").build();
+                .url("http://weidian.com/item_classes.html?userid=205909905&c=77542586&des=%E5%B0%91%E5%84%BF%E8%8B%B1%E8%AF%AD&wfr=wechatpo_keywords_shop").build();
         Button subButton1_2 = new Button.Builder().type(ButtonType.VIEW.getType()).name("青少年英语")
-                .url("http://zhibo666.tv").build();
+                .url("http://weidian.com/item_classes.html?userid=205909905&c=77674898&des=%E9%9D%92%E5%B0%91%E5%B9%B4%E8%8B%B1%E8%AF%AD&wfr=wechatpo_keywords_shop").build();
         Button subButton1_3 = new Button.Builder().type(ButtonType.VIEW.getType()).name("成人英语")
-                .url("http://zhibo666.tv").build();
+                .url("http://weidian.com/item_classes.html?userid=205909905&c=77674914&des=%E6%88%90%E4%BA%BA%E8%8B%B1%E8%AF%AD&wfr=wechatpo_keywords_shop").build();
         Button subButton1_4 = new Button.Builder().type(ButtonType.VIEW.getType()).name("VIP课程")
-                .url("http://zhibo666.tv").build();
+                .url("http://weidian.com/item_classes.html?userid=205909905&c=77674959&des=%E5%AE%9A%E5%88%B6%E8%AF%BE%E7%A8%8B&wfr=wechatpo_keywords_shop").build();
         button1.setSubButton(Arrays.asList(subButton1_1, subButton1_2, subButton1_3, subButton1_4));
         Button button2 = new Button();
         button2.setName("二维码");

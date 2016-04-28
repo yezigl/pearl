@@ -71,8 +71,8 @@ public class WeixinService {
         }
         Map<String, String> params = new HashMap<>();
         params.put("grant_type", "client_credential");
-        params.put("appid", Constants.APP_ID);
-        params.put("secret", Constants.APP_SECRECT);
+        params.put("appid", Constants.WX_APP_ID);
+        params.put("secret", Constants.WX_APP_SECRECT);
         String uri = params.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue())
                 .collect(Collectors.joining("&"));
         String ret = HttpUtils.get(Constants.WX_API_ACCESSTOKEN + "?" + uri);
