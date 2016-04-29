@@ -3,6 +3,7 @@
  */
 package edu.pearl.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,6 +145,7 @@ public class WeixinService {
     
     public void updateUser(User user) {
         // TODO 获取用户信息
+        user.setUpdateTime(new Date());
         userDao.save(user);
     }
     

@@ -37,6 +37,11 @@ public class AdminController {
     
     @Resource
     WeixinService weixinService;
+    
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index() {
+        return "ok";
+    }
 
     @RequestMapping(value = "/menu/create", method = RequestMethod.GET)
     public Object menuCreate() {
