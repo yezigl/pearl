@@ -11,5 +11,14 @@ package edu.pearl.model;
  */
 public enum BonusSource {
 
-    SHARE;
+    SHARE(100);
+    
+    public int score;
+    
+    /**
+     * 
+     */
+    private BonusSource(int score) {
+        this.score = score;
+    }
 }

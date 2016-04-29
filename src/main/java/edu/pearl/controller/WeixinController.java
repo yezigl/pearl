@@ -64,17 +64,17 @@ public class WeixinController {
     
     Set<WxMessage> duplicate = new HashSet<>();
 
-    @RequestMapping(value = "/message/callback", method = RequestMethod.GET)
+    @RequestMapping(value = "/callback", method = RequestMethod.GET)
     public String verify(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce,
             @RequestParam String echostr) {
-        List<String> list = Arrays.asList(timestamp, nonce, echostr);
+        List<String> list = Arrays.asList(Constants.WX_TOKEN, timestamp, nonce);
         String string = list.stream().sorted().reduce("", String::concat);
         String sha1 = DigestUtils.sha1Hex(string);
         logger.info("signature:{}, sha1:{}, string:{}", signature, sha1, string);
         return echostr;
     }
 
-    @RequestMapping(value = "/message/callback", method = RequestMethod.POST)
+    @RequestMapping(value = "/callback", method = RequestMethod.POST)
     public Object message(@RequestBody String body) {
         WxMessage response = new WxMessage();
         response.setFromUserName(Constants.WX_USER_ID);
@@ -153,6 +153,10 @@ public class WeixinController {
                 response.setToUserName(request.getFromUserName());
                 response.setMsgType(WxMessageType.TEXT.getType());
                 response.setContent("您当前在珍珠教育的个人总积分为" + bonus.getAmount() + "分");
+            } else if (WxEventKey.TODO.equals(request.getEventKey())) {
+                response.setToUserName(request.getFromUserName());
+                response.setMsgType(WxMessageType.TEXT.getType());
+                response.setContent("敬请期待，感谢您的光临");
             }
             break;
         case SUBSCRIBE:
@@ -164,7 +168,9 @@ public class WeixinController {
             user.setSubscribe(true);
             weixinService.updateUser(user);
             // TODO 只有新用户第一次才会加积分
-            weixinService.updateBonus(user, BonusSource.SHARE, 100);
+            if (user.isNew()) {
+                weixinService.updateBonus(user, BonusSource.SHARE, BonusSource.SHARE.score);
+            }
             // TODO 发送一条消息
             break;
         case UNSUBSCRIBE:

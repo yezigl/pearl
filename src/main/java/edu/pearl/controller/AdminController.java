@@ -72,8 +72,8 @@ public class AdminController {
         button2.setSubButton(Arrays.asList(subButton2_1, subButton2_2));
         Button button3 = new Button();
         button3.setName("会员信息");
-        Button subButton3_1 = new Button.Builder().type(ButtonType.VIEW.getType()).name("我的预约")
-                .url("http://zhibo666.tv").build();
+        Button subButton3_1 = new Button.Builder().type(ButtonType.CLICK.getType()).name("我的预约")
+                .key("todo").build();
         button3.setSubButton(Arrays.asList(subButton3_1));
         List<Button> list = Arrays.asList(button1, button2, button3);
         buttons.put("button", list);

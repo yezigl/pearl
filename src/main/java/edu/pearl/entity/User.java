@@ -3,6 +3,7 @@
  */
 package edu.pearl.entity;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,6 +30,8 @@ public class User extends MongoEntity {
     private int scene;
     private int fromScene;
     private Source source;
+    @Transient
+    private boolean isNew;
 
     public void genScene() {
         scene = (int) (System.currentTimeMillis() / 1000);
@@ -96,6 +99,14 @@ public class User extends MongoEntity {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
     }
 
 }

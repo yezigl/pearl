@@ -15,6 +15,8 @@ public class Constants {
     
     public static final String WX_APP_SECRECT = "dc84a73d885aa67ef870e1f8c90f0d15";
     
+    public static final String WX_TOKEN = "imloveinit";
+    
     public static final String WX_USER_ID = "Pearl_EDU";
     
     public static final String WX_HOST = "https://api.weixin.qq.com/cgi-bin";

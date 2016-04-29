@@ -11,9 +11,8 @@ package edu.pearl.model;
  */
 public enum WxEventKey {
 
-    BONUS,
-    QRCODE;
-    
+    BONUS, QRCODE, TODO;
+
     public boolean equals(String text) {
         return name().toLowerCase().equals(text);
     }
